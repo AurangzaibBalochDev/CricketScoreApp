@@ -19,13 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.expensemanager.presentation.main_screen.components.TopBar
 
 //@Preview(showSystemUi = true)
 @Composable
 fun ExpenseScreen(
-//    navController: NavController,
-//    modifier: Modifier = Modifier
+    navController: NavController,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = { TopBar() },
