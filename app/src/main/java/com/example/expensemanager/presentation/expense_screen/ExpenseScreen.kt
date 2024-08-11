@@ -25,8 +25,8 @@ import com.example.expensemanager.presentation.main_screen.components.TopBar
 //@Preview(showSystemUi = true)
 @Composable
 fun ExpenseScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier
+//    navController: NavController,
+//    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = { TopBar() },
