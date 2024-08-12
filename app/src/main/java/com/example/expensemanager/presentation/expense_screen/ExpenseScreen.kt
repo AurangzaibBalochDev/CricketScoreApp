@@ -31,6 +31,7 @@ import com.example.expensemanager.presentation.components.Screens
 import com.example.expensemanager.presentation.expense_card.ExpenseCard
 import com.example.expensemanager.presentation.main_screen.components.EntryType
 import com.example.expensemanager.presentation.main_screen.components.TopBar
+import com.example.expensemanager.ui.theme.CustomColors
 
 //@Preview(showSystemUi = true)
 @Composable
@@ -61,7 +62,7 @@ fun ExpenseScreen(
                     .fillMaxWidth()
                     .padding(10.dp),
                 elevation = CardDefaults.cardElevation(10.dp),
-                colors = CardDefaults.cardColors(Color.Magenta)
+                colors = CardDefaults.cardColors(CustomColors.PrimaryColor)
             ) {
                 Row(
                     modifier = Modifier
