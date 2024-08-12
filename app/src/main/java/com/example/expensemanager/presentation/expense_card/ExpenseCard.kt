@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expensemanager.data.model.ExpenseEntity
+import com.example.expensemanager.presentation.main_screen.components.EntryType
 
 
 //@Preview(showSystemUi = true)
@@ -41,15 +43,27 @@ fun ExpenseCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
+
                 Text(text = model.title)
                 Text(text = model.savedTime)
             }
 
             Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
-                Text(text = model.amount.toString())
-                Image(imageVector = Icons.Default.Delete , contentDescription = "Delete", modifier = Modifier.clickable {
-                    onDeleteClick()
-                })
+
+                var myColor: Color
+
+                if (model.entryType == EntryType.Expense.name) {
+                    myColor = Color.Red
+                } else {
+                    myColor = Color.Blue
+                }
+                Text(text = model.amount.toString(), color = myColor)
+                Image(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    modifier = Modifier.clickable {
+                        onDeleteClick()
+                    })
             }
         }
 

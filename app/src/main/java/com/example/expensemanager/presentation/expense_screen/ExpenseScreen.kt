@@ -1,9 +1,11 @@
 package com.example.expensemanager.presentation.expense_screen
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensemanager.presentation.components.Screens
 import com.example.expensemanager.presentation.expense_card.ExpenseCard
+import com.example.expensemanager.presentation.main_screen.components.EntryType
 import com.example.expensemanager.presentation.main_screen.components.TopBar
 
 //@Preview(showSystemUi = true)
@@ -34,24 +37,20 @@ import com.example.expensemanager.presentation.main_screen.components.TopBar
 fun ExpenseScreen(
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.padding()
 ) {
     val mainState = viewModel.state.collectAsState().value
-
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = { TopBar() },
         floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(bottom = 20.dp),
-                onClick = {
-                    navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
-                }
-            ) {
+            FloatingActionButton(modifier = Modifier.padding(bottom = 20.dp), onClick = {
+                navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
+            }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         },
     ) {
+        Spacer(modifier = Modifier.padding(vertical = 10.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,29 +60,27 @@ fun ExpenseScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                elevation = CardDefaults.cardElevation(10.dp)
+                elevation = CardDefaults.cardElevation(10.dp),
+                colors = CardDefaults.cardColors(Color.Magenta)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = 15.dp,
-                            vertical = 15.dp
+                            horizontal = 15.dp, vertical = 15.dp
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
-                        modifier = Modifier,
-                        verticalArrangement = Arrangement.Center
+                        modifier = Modifier, verticalArrangement = Arrangement.Center
                     ) {
                         Text(text = "Income")
                         Text(text = "Expense")
                         Text(text = "Balance")
                     }
                     Column(
-                        modifier = Modifier,
-                        verticalArrangement = Arrangement.Center
+                        modifier = Modifier, verticalArrangement = Arrangement.Center
                     ) {
                         Text(text = mainState.totalIncome, color = Color.Green)
                         Text(text = mainState.totalExpense, color = Color.Red)
@@ -91,16 +88,21 @@ fun ExpenseScreen(
                     }
                 }
             }
-
-        }
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(mainState.itemsList) { expenseEntity ->
-                ExpenseCard(model = expenseEntity, modifier = Modifier.clickable {
-                    navController.navigate("${Screens.AddExpenseScreen.route}/${expenseEntity.id}")
-                }, onDeleteClick = {
-                    viewModel.deleteNote(expenseEntity)
-                })
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 20.dp)
+            ) {
+                items(mainState.itemsList) { expenseEntity ->
+                    ExpenseCard(model = expenseEntity, modifier = Modifier.clickable {
+                        navController.navigate("${Screens.AddExpenseScreen.route}/${expenseEntity.id}")
+                    }, onDeleteClick = {
+                        viewModel.deleteNote(expenseEntity)
+                    })
+                }
             }
         }
     }
+
+
 }

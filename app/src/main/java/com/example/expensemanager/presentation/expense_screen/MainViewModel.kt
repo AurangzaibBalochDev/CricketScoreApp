@@ -1,11 +1,13 @@
 package com.example.expensemanager.presentation.expense_screen
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.domain.repository.ExpenseRepository
 import com.example.expensemanager.presentation.components.MainScreenState
 import com.example.expensemanager.presentation.main_screen.components.EntryType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,16 +20,17 @@ import kotlin.math.exp
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: ExpenseRepository
-) :ViewModel(){
+) : ViewModel() {
     private val mainState = MutableStateFlow(MainScreenState())
     val state = mainState.asStateFlow()
 
     init {
-
+        getAllData()
     }
 
+
     private fun getAllData() {
-        GlobalScope.launch {
+        viewModelScope.launch {
             repository.getAllExpense().collectLatest { list ->
                 val expense = 0
                 var income = 0
@@ -36,12 +39,12 @@ class MainViewModel @Inject constructor(
                 }
                 for (items in list) {
                     if (items.entryType == EntryType.Expense.name) {
-                        income += items.amount
+                        income -= items.amount
                     } else {
                         income += items.amount
                     }
                 }
-                val balance = income- expense
+                val balance = income - expense
                 mainState.update {
                     it.copy(
                         totalIncome = income.toString(),
@@ -53,13 +56,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun deleteNote(expenseEntity: ExpenseEntity){
-        GlobalScope.launch {
+    @OptIn(DelicateCoroutinesApi::class)
+    fun deleteNote(expenseEntity: ExpenseEntity) {
+        viewModelScope.launch {
             repository.deleteExpense(expenseEntity)
         }
-        val list= state.value.itemsList.toMutableList()
+        val list = state.value.itemsList.toMutableList()
         val index = list.indexOfFirst {
-            it.id== expenseEntity.id
+            it.id == expenseEntity.id
         }
         list.removeAt(index)
         mainState.update {

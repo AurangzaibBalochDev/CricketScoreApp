@@ -2,6 +2,7 @@ package com.example.expensemanager.presentation.add_expense_manager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.expensemanager.core.MyLocalData
 import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.domain.repository.ExpenseRepository
 import com.example.expensemanager.presentation.main_screen.components.EntryType
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 
@@ -49,7 +51,7 @@ class AddExpenseViewModel @Inject constructor(
                     entryType = state.value.selected.name,
                     title = state.value.title,
                     amount = state.value.amount.toInt(),
-                    savedTime = "12:30"
+                    savedTime = MyLocalData.getDateByLong(Calendar.getInstance().timeInMillis)
                 )
             )
         }
@@ -63,7 +65,7 @@ class AddExpenseViewModel @Inject constructor(
                     entryType = state.value.selected.name,
                     title = state.value.title,
                     amount = state.value.amount.toInt(),
-                    savedTime = "12:40"
+                    savedTime = MyLocalData.getDateByLong(Calendar.getInstance().timeInMillis)
                 )
             )
         }

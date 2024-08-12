@@ -14,22 +14,19 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
     @Singleton
-    fun getExpenseDao(db: AppDatabase): ExpenseRepository {
-        return ExpenseRepositoryImpl(db.expenseDao())
+    fun getExpenseDao(appDataBase: AppDatabase):ExpenseDao{
+        return appDataBase.expenseDao()
     }
-
     @Provides
     @Singleton
-    fun getDb(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "app_db").build()
+    fun getDb(@ApplicationContext context: Context):AppDatabase{
+        return Room.databaseBuilder(context,AppDatabase::class.java,"app_db").build()
     }
-
     @Provides
     @Singleton
     fun provideExpenseRepositoryImpl(dao: ExpenseDao): ExpenseRepository {
