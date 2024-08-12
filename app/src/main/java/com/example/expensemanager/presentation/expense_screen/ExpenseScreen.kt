@@ -1,11 +1,14 @@
 package com.example.expensemanager.presentation.expense_screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -15,19 +18,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.expensemanager.presentation.components.Screens
+import com.example.expensemanager.presentation.expense_card.ExpenseCard
 import com.example.expensemanager.presentation.main_screen.components.TopBar
 
 //@Preview(showSystemUi = true)
 @Composable
 fun ExpenseScreen(
     navController: NavController,
+    viewModel: MainViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val mainState = viewModel.state.collectAsState().value
+
     Scaffold(
         modifier = Modifier.fillMaxSize(), topBar = { TopBar() },
         floatingActionButton = {
@@ -35,13 +45,14 @@ fun ExpenseScreen(
                 modifier = Modifier
                     .padding(bottom = 20.dp),
                 onClick = {
+                    navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
                 }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         },
     ) {
-          Column(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -74,13 +85,22 @@ fun ExpenseScreen(
                         modifier = Modifier,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "150000", color = Color.Green)
-                        Text(text = "23123", color = Color.Red)
-                        Text(text = "345432535")
+                        Text(text = mainState.totalIncome, color = Color.Green)
+                        Text(text = mainState.totalExpense, color = Color.Red)
+                        Text(text = mainState.totalBalance)
                     }
                 }
             }
 
+        }
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(mainState.itemsList) { expenseEntity ->
+                ExpenseCard(model = expenseEntity, modifier = Modifier.clickable {
+                    navController.navigate("${Screens.AddExpenseScreen.route}/${expenseEntity.id}")
+                }, onDeleteClick = {
+                    viewModel.deleteNote(expenseEntity)
+                })
+            }
         }
     }
 }
