@@ -41,7 +41,7 @@ fun ExpenseScreen(
 ) {
     val mainState = viewModel.state.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize().padding(vertical = 10.dp), topBar = { TopBar() },
+        modifier = Modifier.fillMaxSize().padding(vertical = 35.dp), topBar = { TopBar() },
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.padding(bottom = 20.dp), onClick = {
                 navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
@@ -70,8 +70,7 @@ fun ExpenseScreen(
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.Center,
                     ) {
-//                        Text(text = "Total Income")
-//                        Text(text = "Total Expense")
+
                         Text(
                             text = "Current Balance",
                             color = Color.DarkGray,

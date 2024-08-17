@@ -8,5 +8,5 @@ object CustomColors {
     val SecondaryColor = Color(0xFF24A79A)
     val mainCardColor = Color(0xFFCAC09B)
     val dimCardColor = Color(0xFFCFCAB8)
-    val incomeColor = Color(0x9E01B15F)
+    val incomeColor = Color(0x9E087944)
 }
