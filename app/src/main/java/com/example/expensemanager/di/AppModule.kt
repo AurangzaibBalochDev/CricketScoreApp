@@ -1,10 +1,10 @@
 package com.example.expensemanager.di
 
 import android.content.Context
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.room.Room
-import com.example.expensemanager.data.ExpenseRepositoryImpl
+import com.example.expensemanager.data.repository.ExpenseRepositoryImpl
 import com.example.expensemanager.data.datasource.ExpenseDao
+import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.domain.repository.ExpenseRepository
 import com.example.expensemanager.room.AppDatabase
 import dagger.Module

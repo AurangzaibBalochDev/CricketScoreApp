@@ -16,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.presentation.main_screen.components.EntryType
+import com.example.expensemanager.ui.theme.CustomColors
 
 
 //@Preview(showSystemUi = true)
@@ -32,7 +32,9 @@ fun ExpenseCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(10.dp), elevation = CardDefaults.cardElevation(10.dp)
+            .padding(10.dp),
+        elevation = CardDefaults.cardElevation(10.dp),
+        colors = CardDefaults.cardColors(CustomColors.dimCardColor)
     ) {
 
         Row(
@@ -55,7 +57,7 @@ fun ExpenseCard(
                 if (model.entryType == EntryType.Expense.name) {
                     myColor = Color.Red
                 } else {
-                    myColor = Color.Blue
+                    myColor = CustomColors.incomeColor
                 }
                 Text(text = model.amount.toString(), color = myColor)
                 Image(

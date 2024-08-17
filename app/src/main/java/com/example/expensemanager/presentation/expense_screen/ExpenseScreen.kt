@@ -1,6 +1,5 @@
 package com.example.expensemanager.presentation.expense_screen
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,25 +23,25 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensemanager.presentation.components.Screens
 import com.example.expensemanager.presentation.expense_card.ExpenseCard
-import com.example.expensemanager.presentation.main_screen.components.EntryType
 import com.example.expensemanager.presentation.main_screen.components.TopBar
 import com.example.expensemanager.ui.theme.CustomColors
 
-//@Preview(showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun ExpenseScreen(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier.padding()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val mainState = viewModel.state.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize(), topBar = { TopBar() },
+        modifier = Modifier.fillMaxSize().padding(vertical = 10.dp), topBar = { TopBar() },
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.padding(bottom = 20.dp), onClick = {
                 navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
@@ -62,33 +61,71 @@ fun ExpenseScreen(
                     .fillMaxWidth()
                     .padding(10.dp),
                 elevation = CardDefaults.cardElevation(10.dp),
-                colors = CardDefaults.cardColors(CustomColors.PrimaryColor)
+                colors = CardDefaults.cardColors(CustomColors.mainCardColor)
             ) {
+
+                Column() {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+//                        Text(text = "Total Income")
+//                        Text(text = "Total Expense")
+                        Text(
+                            text = "Current Balance",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+
+//                        Text(text = mainState.totalIncome.toString(), color = Color.Green)
+//                        Text(text = mainState.totalExpense.toString(), color = Color.Red)
+                        Text(text = mainState.totalBalance.toString(), fontSize = 40.sp)
+                    }
+
+                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            horizontal = 15.dp, vertical = 15.dp
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(
-                        modifier = Modifier, verticalArrangement = Arrangement.Center
+                    Row(
+                        modifier = Modifier
                     ) {
                         Text(text = "Income")
-                        Text(text = "Expense")
-                        Text(text = "Balance")
                     }
-                    Column(
-                        modifier = Modifier, verticalArrangement = Arrangement.Center
+                    Row(
                     ) {
-                        Text(text = mainState.totalIncome, color = Color.Green)
-                        Text(text = mainState.totalExpense, color = Color.Red)
-                        Text(text = mainState.totalBalance)
+                        Text(text = "Expenses")
                     }
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        modifier = Modifier
+                    ) {
+                        Text(text = mainState.totalIncome.toString(), fontSize = 20.sp)
+                    }
+                    Row(
+                    ) {
+                        Text(text = mainState.totalExpense.toString(), fontSize = 20.sp)
+                    }
+                }
+
+
             }
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -98,7 +135,7 @@ fun ExpenseScreen(
                     ExpenseCard(model = expenseEntity, modifier = Modifier.clickable {
                         navController.navigate("${Screens.AddExpenseScreen.route}/${expenseEntity.id}")
                     }, onDeleteClick = {
-                        viewModel.deleteNote(expenseEntity)
+                        viewModel.deleteExpenseNote(expenseEntity)
                     })
                 }
             }

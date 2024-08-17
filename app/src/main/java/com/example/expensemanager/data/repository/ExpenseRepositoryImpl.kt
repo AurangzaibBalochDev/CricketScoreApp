@@ -1,4 +1,4 @@
-package com.example.expensemanager.data
+package com.example.expensemanager.data.repository
 
 import com.example.expensemanager.data.datasource.ExpenseDao
 import com.example.expensemanager.data.model.ExpenseEntity
