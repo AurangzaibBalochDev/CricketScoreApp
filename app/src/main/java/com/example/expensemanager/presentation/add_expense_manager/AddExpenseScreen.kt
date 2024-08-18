@@ -1,5 +1,6 @@
 package com.example.expensemanager.presentation.add_expense_manager
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,22 +11,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.expensemanager.presentation.main_screen.components.EntryType
+import com.example.expensemanager.presentation.text_field.MyTextField
+import com.example.expensemanager.ui.theme.CustomColors
 
 @Composable
 fun AddExpenseScreen(
@@ -53,18 +61,19 @@ fun AddExpenseScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Title")
-            TextField(value = state.title, onValueChange = {
-                viewModel.onTitleChanged(it)
-            })
+            MyTextField(
+                hint = "title",
+                value = state.title,
+                onValueChange = { viewModel.onTitleChanged(it) })
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(text = "Amount")
 
-            TextField(value = state.amount, onValueChange = {
-                viewModel.onAmountChanged(it)
-            }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-
+            MyTextField(
+                hint = "amount",
+                value = state.title,
+                onValueChange = { viewModel.onAmountChanged(it) })
             Text("Select an option:")
 
             Row(
@@ -102,9 +111,19 @@ fun AddExpenseScreen(
                         navController.popBackStack()
                     }
                 },
-                modifier = Modifier,
+                colors = ButtonDefaults.buttonColors(CustomColors.mainCardColor),
+                shape = RoundedCornerShape(5.dp)
             ) {
-                Text(text = "Save")
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+
+                    Text(
+                        text = "Save",
+                    )
+                }
             }
         }
     }

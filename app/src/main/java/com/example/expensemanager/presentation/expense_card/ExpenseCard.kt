@@ -52,12 +52,10 @@ fun ExpenseCard(
 
             Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
 
-                var myColor: Color
-
-                if (model.entryType == EntryType.Expense.name) {
-                    myColor = Color.Red
+                val myColor: Color = if (model.entryType == EntryType.Expense.name) {
+                    Color.Red
                 } else {
-                    myColor = CustomColors.incomeColor
+                    CustomColors.incomeColor
                 }
                 Text(text = model.amount.toString(), color = myColor)
                 Image(

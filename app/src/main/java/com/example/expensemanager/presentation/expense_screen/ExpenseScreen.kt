@@ -41,16 +41,15 @@ fun ExpenseScreen(
 ) {
     val mainState = viewModel.state.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize().padding(vertical = 35.dp), topBar = { TopBar() },
+        modifier = Modifier.fillMaxSize().padding(vertical = 25.dp), topBar = { TopBar() },
         floatingActionButton = {
-            FloatingActionButton(modifier = Modifier.padding(bottom = 20.dp), onClick = {
+            FloatingActionButton(modifier = Modifier.padding(bottom = 0.dp), onClick = {
                 navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
             }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
             }
         },
     ) {
-        Spacer(modifier = Modifier.padding(vertical = 10.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
