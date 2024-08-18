@@ -1,6 +1,5 @@
 package com.example.expensemanager.presentation.text_field
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.example.expensemanager.ui.theme.CustomColors
 
 @Composable
-fun MyTextField(hint: String, value: String, onValueChange: (String) -> Unit) {
+fun MyTextField(value: String, onValueChange: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
