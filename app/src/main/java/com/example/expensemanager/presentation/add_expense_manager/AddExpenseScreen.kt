@@ -27,6 +27,7 @@ import com.example.expensemanager.presentation.main_screen.components.EntryType
 import com.example.expensemanager.presentation.text_field.MyTextField
 import com.example.expensemanager.ui.theme.CustomColors
 
+
 @Composable
 fun AddExpenseScreen(
     id: String,
