@@ -21,51 +21,52 @@ import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.presentation.main_screen.components.EntryType
 import com.example.expensemanager.ui.theme.CustomColors
 
+//
+////@Preview(showSystemUi = true)
+//@Composable
+//fun ExpenseCard(
+//    model: ExpenseEntity,
+//    modifier: Modifier = Modifier,
+//    onDeleteClick: () -> Unit
 
-//@Preview(showSystemUi = true)
-@Composable
-fun ExpenseCard(
-    model: ExpenseEntity,
-    modifier: Modifier = Modifier,
-    onDeleteClick: () -> Unit
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        elevation = CardDefaults.cardElevation(10.dp),
-        colors = CardDefaults.cardColors(CustomColors.dimCardColor)
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 15.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
-
-                Text(text = model.title)
-                Text(text = model.savedTime)
-            }
-
-            Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
-
-                val myColor: Color = if (model.entryType == EntryType.Expense.name) {
-                    Color.Red
-                } else {
-                    CustomColors.incomeColor
-                }
-                Text(text = model.amount.toString(), color = myColor)
-                Image(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
-                    modifier = Modifier.clickable {
-                        onDeleteClick()
-                    })
-            }
-        }
-
-    }
-}
+//) {
+//    Card(
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .padding(10.dp),
+//        elevation = CardDefaults.cardElevation(10.dp),
+//        colors = CardDefaults.cardColors(CustomColors.dimCardColor)
+//    ) {
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 15.dp, vertical = 15.dp),
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
+//
+//                Text(text = model.title)
+//                Text(text = model.savedTime)
+//            }
+//
+//            Column(modifier = Modifier, verticalArrangement = Arrangement.Center) {
+//
+//                val myColor: Color = if (model.entryType == EntryType.Expense.name) {
+//                    Color.Red
+//                } else {
+//                    CustomColors.incomeColor
+//                }
+//                Text(text = model.amount.toString(), color = myColor)
+//                Image(
+//                    imageVector = Icons.Default.Delete,
+//                    contentDescription = "Delete",
+//                    modifier = Modifier.clickable {
+//                        onDeleteClick()
+//                    })
+//            }
+//        }
+//
+//    }
+//}

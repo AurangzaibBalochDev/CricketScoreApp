@@ -1,5 +1,9 @@
 package com.example.expensemanager.presentation.add_expense_manager
 
+import android.util.Log
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensemanager.core.MyLocalData
@@ -14,16 +18,15 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
-
 @HiltViewModel
 class AddExpenseViewModel @Inject constructor(
     private val repository: ExpenseRepository
 ) : ViewModel() {
     data class AddScreenState(
-        val id: Int = -1,
-        val title: String = "",
-        val amount: String = "",
-        val selected: EntryType = EntryType.Income,
+        var id: Int = -1,
+        var totalScores: Int = 0,
+        var player1Scores: Int = 0,
+        var player2Scores: Int = 0,
 
         )
 
@@ -31,43 +34,24 @@ class AddExpenseViewModel @Inject constructor(
     private val _state = MutableStateFlow(AddScreenState())
     val state = _state.asStateFlow()
 
-    fun onAmountChanged(amount: String) {
-        _state.update {
-            it.copy(amount = amount)
-        }
-    }
 
-    fun onTitleChanged(title: String) {
-        _state.update {
-            it.copy(title = title)
-        }
-    }
 
-    fun onSaveItem() {
+     fun onSaveItem() {
         viewModelScope.launch {
-            repository.insertExpense(
-                ExpenseEntity(
-                    id = 0,
-                    entryType = state.value.selected.name,
-                    title = state.value.title,
-                    amount = state.value.amount.toInt(),
-                    savedTime = MyLocalData.getDateByLong(Calendar.getInstance().timeInMillis)
+            try {
+                val data = ExpenseEntity(
+                    totalScores = state.value.totalScores,
+                    player1Scores = state.value.player1Scores,
+                    player2Scores = state.value.player2Scores,
                 )
-            )
-        }
-    }
+                if (state.value.id == -1) {
+                    repository.insertExpense(data)
+                }
+                Log.d("addexpensevm", "saved data")
 
-    fun onUpdateItem() {
-        viewModelScope.launch {
-            repository.insertExpense(
-                ExpenseEntity(
-                    id = state.value.id,
-                    entryType = state.value.selected.name,
-                    title = state.value.title,
-                    amount = state.value.amount.toInt(),
-                    savedTime = MyLocalData.getDateByLong(Calendar.getInstance().timeInMillis)
-                )
-            )
+            } catch (e: Exception) {
+                Log.d("addexpensevm", "onSaveItem: ${e.message}")
+            }
         }
     }
 
@@ -79,20 +63,31 @@ class AddExpenseViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         id = entity.id,
-                        title = entity.title,
-                        amount = entity.amount.toString(),
+                        totalScores = entity.totalScores,
+                        player1Scores = entity.player1Scores,
+                        player2Scores = entity.player2Scores,
                     )
                 }
             }
         }
     }
 
-    fun select(entryType: EntryType) {
-        _state.update {
-            it.copy(
-                selected = entryType
+
+    fun onButtonClick(btn: String) {
+        _state.update { currentState ->
+            val increment = when (btn) {
+                "Single" -> 1
+                "Double" -> 2
+                "Four" -> 4
+                "Six" -> 6
+                else -> 0
+            }
+            currentState.copy(
+
+                totalScores = currentState.totalScores + increment,
+                player1Scores = currentState.player1Scores + increment,
+                player2Scores = currentState.player2Scores + increment
             )
         }
     }
-
 }

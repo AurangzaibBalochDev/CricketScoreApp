@@ -30,24 +30,26 @@ class MainViewModel @Inject constructor(
     private fun getAllData() {
         viewModelScope.launch {
             repository.getAllExpense().collectLatest { list ->
-                var expense = 0
-                var income = 0
-                mainState.update {
-                    it.copy(itemsList = list)
-                }
-                for (items in list) {
-                    if (items.entryType == EntryType.Expense.name) {
-                        expense += items.amount
-                    } else {
-                        income += items.amount
-                    }
-                }
-                val balance = income - expense
+                var totalScores = 0
+                var player1Scores = 0
+                var player2Scores = 0
                 mainState.update {
                     it.copy(
-                        totalIncome = income,
-                        totalExpense = expense,
-                        totalBalance = balance,
+                        totalScores = totalScores,
+                        player1Scores = player1Scores,
+                        player2Scores = player2Scores
+                    )
+                }
+                for (items in list) {
+                    totalScores += items.totalScores
+                    player1Scores += items.player1Scores
+                    player2Scores += items.player2Scores
+                }
+                mainState.update {
+                    it.copy(
+                        totalScores = totalScores,
+                        player1Scores = player1Scores,
+                        player2Scores = player2Scores,
                     )
                 }
 
@@ -55,19 +57,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun deleteExpenseNote(expenseEntity: ExpenseEntity) {
-        viewModelScope.launch {
-            repository.deleteExpense(expenseEntity)
-        }
-        val list = state.value.itemsList.toMutableList()
-        val index = list.indexOfFirst {
-            it.id == expenseEntity.id
-        }
-        list.removeAt(index)
-        mainState.update {
-            it.copy(itemsList = list)
-        }
-    }
 }
 
 

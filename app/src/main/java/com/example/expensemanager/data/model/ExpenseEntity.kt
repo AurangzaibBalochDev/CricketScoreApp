@@ -7,10 +7,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class ExpenseEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val entryType: String,
-    val title: String,
-    val amount: Int,
-    val savedTime: String,
+    val id: Int = 0,
+    val totalScores: Int = 0,
+    val player1Scores: Int= 0,
+    val player2Scores: Int = 0,
 
     )
