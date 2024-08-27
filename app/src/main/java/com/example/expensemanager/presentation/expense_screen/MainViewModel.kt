@@ -1,5 +1,6 @@
 package com.example.expensemanager.presentation.expense_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensemanager.data.model.ExpenseEntity
@@ -23,36 +24,23 @@ class MainViewModel @Inject constructor(
     val state = mainState.asStateFlow()
 
     init {
-        getAllData()
+        refreshData()
     }
 
 
-    private fun getAllData() {
+    private fun refreshData() {
         viewModelScope.launch {
             repository.getAllExpense().collectLatest { list ->
-                var totalScores = 0
-                var player1Scores = 0
-                var player2Scores = 0
+                val totalExpense = list.sumOf { it.player1Scores + it.player2Scores }
+                val player1Expense = list.sumOf { it.player1Scores }
+                val player2Expense = list.sumOf { it.player2Scores }
                 mainState.update {
                     it.copy(
-                        totalScores = totalScores,
-                        player1Scores = player1Scores,
-                        player2Scores = player2Scores
+                        totalScores = totalExpense,
+                        player1Scores = player1Expense,
+                        player2Scores = player2Expense,
                     )
                 }
-                for (items in list) {
-                    totalScores += items.totalScores
-                    player1Scores += items.player1Scores
-                    player2Scores += items.player2Scores
-                }
-                mainState.update {
-                    it.copy(
-                        totalScores = totalScores,
-                        player1Scores = player1Scores,
-                        player2Scores = player2Scores,
-                    )
-                }
-
             }
         }
     }

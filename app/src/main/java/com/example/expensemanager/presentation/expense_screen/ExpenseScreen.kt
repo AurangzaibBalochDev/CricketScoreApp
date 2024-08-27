@@ -1,5 +1,6 @@
 package com.example.expensemanager.presentation.expense_screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,15 +29,19 @@ import com.example.expensemanager.presentation.components.Screens
 import com.example.expensemanager.presentation.main_screen.components.TopBar
 import com.example.expensemanager.ui.theme.CustomColors
 
+var player1Clicked: Boolean = false
 
 @Composable
 fun ExpenseScreen(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     val mainState = viewModel.state.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize().padding(vertical = 25.dp), topBar = { TopBar() },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 25.dp),
+        topBar = { TopBar() },
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.padding(bottom = 0.dp), onClick = {
                 navController.navigate("${Screens.AddExpenseScreen.route}/${-1}")
@@ -76,7 +81,7 @@ fun ExpenseScreen(
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.Center,
                     ) {
-                        Text(text = mainState.player1Scores.toString(), fontSize = 40.sp)
+                        Text(text = mainState.totalScores.toString(), fontSize = 40.sp)
                     }
 
                 }
@@ -89,11 +94,11 @@ fun ExpenseScreen(
                     Row(
                         modifier = Modifier
                     ) {
-                        Text(text = "Player 1")
+                        Text(text = "Player 1", Modifier.clickable { player1Clicked = true })
                     }
                     Row(
                     ) {
-                        Text(text = "Player 2")
+                        Text(text = "Player 2", Modifier.clickable { player1Clicked = false })
                     }
                 }
                 Row(

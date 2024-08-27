@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class ExpenseRepositoryImpl constructor(
     private val dao: ExpenseDao
 ) : ExpenseRepository {
-    override suspend fun insertExpense(expenseEntity: ExpenseEntity) {
+    override suspend fun insertScores(expenseEntity: ExpenseEntity) {
         dao.insertExpense(expenseEntity)
     }
 

@@ -1,21 +1,15 @@
 package com.example.expensemanager.presentation.add_expense_manager
 
 import android.util.Log
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.expensemanager.core.MyLocalData
 import com.example.expensemanager.data.model.ExpenseEntity
 import com.example.expensemanager.domain.repository.ExpenseRepository
-import com.example.expensemanager.presentation.main_screen.components.EntryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,17 +29,16 @@ class AddExpenseViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
 
-
-     fun onSaveItem() {
+    fun onSaveItem() {
         viewModelScope.launch {
             try {
                 val data = ExpenseEntity(
-                    totalScores = state.value.totalScores,
+                    totalScores = 0,
                     player1Scores = state.value.player1Scores,
                     player2Scores = state.value.player2Scores,
                 )
                 if (state.value.id == -1) {
-                    repository.insertExpense(data)
+                    repository.insertScores(data)
                 }
                 Log.d("addexpensevm", "saved data")
 
@@ -62,8 +55,7 @@ class AddExpenseViewModel @Inject constructor(
             if (id.isNotEmpty()) {
                 _state.update {
                     it.copy(
-                        id = entity.id,
-                        totalScores = entity.totalScores,
+                        totalScores = entity.player1Scores + entity.player2Scores,
                         player1Scores = entity.player1Scores,
                         player2Scores = entity.player2Scores,
                     )
@@ -75,6 +67,11 @@ class AddExpenseViewModel @Inject constructor(
 
     fun onButtonClick(btn: String) {
         _state.update { currentState ->
+            val player1Scores = currentState.player1Scores
+            val player2Scores = currentState.player2Scores
+            val totalScores = currentState.totalScores;
+
+
             val increment = when (btn) {
                 "Single" -> 1
                 "Double" -> 2
@@ -83,10 +80,9 @@ class AddExpenseViewModel @Inject constructor(
                 else -> 0
             }
             currentState.copy(
-
-                totalScores = currentState.totalScores + increment,
-                player1Scores = currentState.player1Scores + increment,
-                player2Scores = currentState.player2Scores + increment
+                totalScores = player1Scores + player2Scores,
+                player1Scores = player1Scores + increment,
+                player2Scores = player2Scores + increment
             )
         }
     }

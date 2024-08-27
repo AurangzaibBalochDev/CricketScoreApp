@@ -23,10 +23,24 @@ import androidx.navigation.NavController
 
 
 @Composable
+fun ScoreButton(btn: String, onClick: () -> Unit) {
+    Box(modifier = Modifier.padding(5.dp)) {
+        FloatingActionButton(
+            onClick = {
+                onClick()
+            }, shape = CircleShape, contentColor = Color.White,
+
+            modifier = Modifier.size(80.dp)
+        ) {
+            Text(text = btn, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+
+@Composable
 fun AddExpenseScreen(
-    id: String,
-    navController: NavController,
-    viewModel: AddExpenseViewModel = hiltViewModel()
+    id: String, navController: NavController, viewModel: AddExpenseViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
         if (id.toInt() != -1) {
@@ -38,35 +52,14 @@ fun AddExpenseScreen(
     )
 
     val state = viewModel.state.collectAsState().value
-    Log.d("statevalue",state.totalScores.toString())
+    Log.d("statevalue", state.totalScores.toString())
 
     LazyVerticalGrid(columns = GridCells.Fixed(4)) {
-        items(buttonList) { it ->
+        items(buttonList) {
             ScoreButton(btn = it, onClick = {
                 viewModel.onButtonClick(it)
                 viewModel.onSaveItem()
-
             })
-
-
-        }
-    }
-}
-
-
-@Composable
-fun ScoreButton(btn: String, onClick: () -> Unit) {
-    Box(modifier = Modifier.padding(5.dp)) {
-        FloatingActionButton(
-            onClick = {
-                onClick()
-            },
-            shape = CircleShape,
-            contentColor = Color.White,
-
-            modifier = Modifier.size(80.dp)
-        ) {
-            Text(text = btn, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
