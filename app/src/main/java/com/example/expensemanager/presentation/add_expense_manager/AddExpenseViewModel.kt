@@ -1,5 +1,6 @@
 package com.example.expensemanager.presentation.add_expense_manager
 
+import android.text.BoringLayout
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,8 +22,8 @@ class AddExpenseViewModel @Inject constructor(
         var totalScores: Int = 0,
         var player1Scores: Int = 0,
         var player2Scores: Int = 0,
-
-        )
+        var isPlayer1: Boolean = false
+    )
 
 
     private val _state = MutableStateFlow(AddScreenState())
@@ -40,7 +41,6 @@ class AddExpenseViewModel @Inject constructor(
                 if (state.value.id == -1) {
                     repository.insertScores(data)
                 }
-                Log.d("addexpensevm", "saved data")
 
             } catch (e: Exception) {
                 Log.d("addexpensevm", "onSaveItem: ${e.message}")
@@ -64,6 +64,10 @@ class AddExpenseViewModel @Inject constructor(
         }
     }
 
+    fun onPlayer1Clicked() {
+        _state.value = _state.value.copy(isPlayer1 = true)
+    }
+
 
     fun onButtonClick(btn: String) {
         _state.update { currentState ->
@@ -79,11 +83,11 @@ class AddExpenseViewModel @Inject constructor(
                 "Six" -> 6
                 else -> 0
             }
-            currentState.copy(
-                totalScores = player1Scores + player2Scores,
-                player1Scores = player1Scores + increment,
-                player2Scores = player2Scores + increment
-            )
+            if (_state.value.isPlayer1) {
+                currentState.copy(player1Scores = player1Scores + increment)
+            } else {
+                currentState.copy(player2Scores = player2Scores + increment)
+            }
         }
     }
 }
